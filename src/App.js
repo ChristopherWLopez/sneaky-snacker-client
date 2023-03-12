@@ -1,14 +1,22 @@
 import React, { useEffect, useState } from "react";
-// import EffectDemo from "./EffectDemo";
 import { socket } from "./socket";
 import { EVENT_NAMES } from "./utils";
 
+
+// const sendAnswer =(answer)=>{
+//   socket.emit(EVENT_NAMES.selection, answer);
+//     console.log(answer);
+// }
+
 const App = () => {
+
   const [isConnected, setIsConnected] = useState(false);
   const [question, setQuestion] = useState("");
   // const [isReady, setIsReady] = useState(false)
   const [choices, setChoices] = useState([]);
   const [selection, setSelection] = useState('');
+  // const [room, setRoom] = useState()
+
 
   useEffect(() => {
     function handleConnect() {
@@ -25,9 +33,9 @@ const App = () => {
 
       // socket.emit(EVENT_NAMES.selection, selection);
 
-      const handleChoice = (selection) => {
-    socket.emit(EVENT_NAMES.selection, selection);
-  };
+  //     const handleChoice = (selection) => {
+  //   socket.emit(EVENT_NAMES.selection, selection);
+  // };
     
 
     // these are our listeners
@@ -63,9 +71,12 @@ const App = () => {
     // console.log(question);
   };
 
-  // const handleChoice = (choice) => {
-  //   socket.emit(EVENT_NAMES.selection, choice);
-  // };
+  const handleChoice = (choice) => {
+    console.log(choice);
+    socket.emit(EVENT_NAMES.selection, choice);
+    
+  };
+
 
   return (
     <div>
@@ -75,10 +86,10 @@ const App = () => {
       {/* <EffectDemo /> */}
       <div>
         {question.message}
-        {choices.map((choice) => (
-          <button key={choice} onClick={(e)=> {setSelection(e.target.value)}}>
-            {choice}
-          </button>
+         {choices.map((choice) => (
+        <button key={choice} value={choice} onClick={(e)=> handleChoice(choice)}>
+          {choice}
+        </button>
         ))}
         {/* {question.choices.map((choice) => 
           <button>{choice}</button>
@@ -87,5 +98,6 @@ const App = () => {
     </div>
   );
 };
+
 
 export default App;
