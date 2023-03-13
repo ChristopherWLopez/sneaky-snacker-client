@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { socket } from "./socket";
 import { EVENT_NAMES } from "./utils";
+import './App.scss';
 
 
 // const sendAnswer =(answer)=>{
@@ -14,7 +15,7 @@ const App = () => {
   const [question, setQuestion] = useState("");
   // const [isReady, setIsReady] = useState(false)
   const [choices, setChoices] = useState([]);
-  const [selection, setSelection] = useState('');
+  // const [selection, setSelection] = useState('');
   // const [room, setRoom] = useState()
 
 
@@ -80,9 +81,10 @@ const App = () => {
 
   return (
     <div>
-      <p>Is connected? {isConnected ? "true" : "false"}</p>
+      <p>{isConnected ? "connected" : "not connected"}</p>
+      <br></br>
       {/* <button onClick={handleHello}>Say hello</button> */}
-      <button onClick={handleReady}>Ready</button>
+      <button className="startButton" onClick={handleReady}>Start new game</button>
       {/* <EffectDemo /> */}
       <div>
         {question.message}
