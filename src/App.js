@@ -28,6 +28,8 @@ const App = () => {
     function handleDisconnect() {
       setIsConnected(false);
       console.log("handleDisconnect has been triggered");
+      setQuestion("")
+      setChoices([]);
     }
 
     
