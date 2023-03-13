@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { socket } from "./socket";
 import { EVENT_NAMES } from "./utils";
 import './App.scss';
+import bannerImage from './Banner.png';
 
 
 // const sendAnswer =(answer)=>{
@@ -23,6 +24,8 @@ const App = () => {
     function handleConnect() {
       setIsConnected(true);
       console.log("handleConnect has been triggered");
+      setQuestion("")
+      setChoices([]);
     }
 
     function handleDisconnect() {
@@ -85,16 +88,21 @@ const App = () => {
     <div>
       <p>{isConnected ? "connected" : "not connected"}</p>
       <br></br>
+      <img src={bannerImage} alt="banner" />
+      <br></br>
       {/* <button onClick={handleHello}>Say hello</button> */}
       <button className="startButton" onClick={handleReady}>Start new game</button>
       {/* <EffectDemo /> */}
       <div>
         {question.message}
-         {choices.map((choice) => (
+         
+         <div className="choices">
+          {choices.map((choice) => (
         <button key={choice} value={choice} onClick={(e)=> handleChoice(choice)}>
           {choice}
         </button>
         ))}
+        </div>
         {/* {question.choices.map((choice) => 
           <button>{choice}</button>
         )} */}
