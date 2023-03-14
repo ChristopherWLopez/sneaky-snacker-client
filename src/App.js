@@ -1,48 +1,29 @@
 import React, { useEffect, useState } from "react";
 import { socket } from "./socket";
 import { EVENT_NAMES } from "./utils";
-import './App.scss';
-import bannerImage from './Banner.png';
-
-
-// const sendAnswer =(answer)=>{
-//   socket.emit(EVENT_NAMES.selection, answer);
-//     console.log(answer);
-// }
+import "./App.scss";
+import bannerImage from "./Banner.png";
 
 const App = () => {
-
   const [isConnected, setIsConnected] = useState(false);
   const [question, setQuestion] = useState("");
-  // const [isReady, setIsReady] = useState(false)
   const [choices, setChoices] = useState([]);
-  // const [selection, setSelection] = useState('');
-  // const [room, setRoom] = useState()
-
+  const [message, setMessage] = useState('')
 
   useEffect(() => {
     function handleConnect() {
       setIsConnected(true);
       console.log("handleConnect has been triggered");
-      setQuestion("")
+      setQuestion("");
       setChoices([]);
     }
 
     function handleDisconnect() {
       setIsConnected(false);
       console.log("handleDisconnect has been triggered");
-      setQuestion("")
+      setQuestion("");
       setChoices([]);
     }
-
-    
-
-      // socket.emit(EVENT_NAMES.selection, selection);
-
-  //     const handleChoice = (selection) => {
-  //   socket.emit(EVENT_NAMES.selection, selection);
-  // };
-    
 
     // these are our listeners
     socket.on("connect", handleConnect);
@@ -50,14 +31,16 @@ const App = () => {
     socket.on("response", (payload) => console.log(payload));
     socket.on(EVENT_NAMES.questionsReady, (question) => {
       setQuestion(question);
-      setChoices(question.choices);
-
-      // setIsReady(true);
+      setChoices(question.choices)
       console.log(question);
       console.log(question.choices);
-      // clean up the socket listeners
     });
 
+    socket.on(EVENT_NAMES.message, (message) =>{
+      console.log(message);
+      setMessage(message);
+    })
+    // clean up the socket listeners
     return () => {
       // turns off socket listeners
       socket.off("connect", handleConnect);
@@ -66,23 +49,15 @@ const App = () => {
     };
   }, []);
 
-  // const handleHello = () => {
-  //   socket.emit("hello");
-  // };
-
   const handleReady = () => {
     socket.emit(EVENT_NAMES.childReady);
-    // socket.on(EVENT_NAMES.questionsReady, (question) => setQuestion(question));
-    // setIsReady(true);
-    // console.log(question);
   };
 
   const handleChoice = (choice) => {
+    setMessage('');
     console.log(choice);
     socket.emit(EVENT_NAMES.selection, choice);
-    
   };
-
 
   return (
     <div>
@@ -90,26 +65,30 @@ const App = () => {
       <br></br>
       <img src={bannerImage} alt="banner" />
       <br></br>
-      {/* <button onClick={handleHello}>Say hello</button> */}
-      <button className="startButton" onClick={handleReady}>Start new game</button>
-      {/* <EffectDemo /> */}
+      <button className="startButton" onClick={handleReady}>
+        Start new game
+      </button>
       <div>
-        {question.message}
-         
-         <div className="choices">
-          {choices.map((choice) => (
-        <button key={choice} value={choice} onClick={(e)=> handleChoice(choice)}>
-          {choice}
-        </button>
-        ))}
+      {message}
+      <br></br>
+      <br></br>
+      {question.message}
+
+        <div className="choices">
+          {choices &&
+            choices.map((choice) => (
+              <button
+                key={choice}
+                value={choice}
+                onClick={(e) => handleChoice(choice)}
+              >
+                {choice}
+              </button>
+            ))}
         </div>
-        {/* {question.choices.map((choice) => 
-          <button>{choice}</button>
-        )} */}
       </div>
     </div>
   );
 };
-
 
 export default App;

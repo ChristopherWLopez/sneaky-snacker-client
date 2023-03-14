@@ -3,6 +3,8 @@ const EVENT_NAMES = {
     dogReady: 'dogReady',
     questionsReady: 'questionsReady',
     selection: 'selection',
+    message: 'message',
+
   };
   
   module.exports = {
