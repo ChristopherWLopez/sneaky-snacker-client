@@ -1,21 +1,9 @@
 import React from "react";
 
-const rooms = [
-  "kidsroom",
-  "bathroom",
-  "parentsroom",
-  "hallway",
-  "kitchen",
-  "livingroom",
-  "garage",
-];
-
-const Room = (choices) => {
+const Room = ({ currentRoom }) => {
   return (
     <div>
-      {choices.forEach((choice) => {
-        rooms.includes(choice) && <img src={`/${choice}.png`} alt={choice} />;
-      })}
+      <img src={`/${currentRoom}.png`} alt={`${currentRoom}`} />
     </div>
   );
 };

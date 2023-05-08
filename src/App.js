@@ -5,12 +5,23 @@ import "./App.scss";
 import bannerImage from "./Banner.png";
 import Room from "./Room";
 
+const rooms = [
+  "kidsroom",
+  "bathroom",
+  "parentsroom",
+  "hallway",
+  "kitchen",
+  "livingroom",
+  "garage",
+];
+
 const App = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [question, setQuestion] = useState("");
   const [choices, setChoices] = useState([]);
   const [message, setMessage] = useState("");
   const [viewBanner, setViewBanner] = useState(true);
+  const [currentRoom, setCurrentRoom] = useState("kidsroom");
 
   useEffect(() => {
     function handleConnect() {
@@ -60,6 +71,8 @@ const App = () => {
     console.log(choice);
     socket.emit(EVENT_NAMES.selection, choice);
     setViewBanner(false);
+
+    if (rooms.includes(choice)) setCurrentRoom(choice);
   };
 
   return (
@@ -78,8 +91,8 @@ const App = () => {
 
       <div>
         {/* picture of room */}
-        <Room choices={choices} />
-        
+        <Room currentRoom={currentRoom} />
+
         {message}
         <br></br>
         <br></br>
