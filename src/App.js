@@ -22,6 +22,7 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [viewBanner, setViewBanner] = useState(true);
   const [currentRoom, setCurrentRoom] = useState("kidsroom");
+  const [displayRoom, setDisplayRoom] = useState(false);
 
   useEffect(() => {
     function handleConnect() {
@@ -71,6 +72,7 @@ const App = () => {
     console.log(choice);
     socket.emit(EVENT_NAMES.selection, choice);
     setViewBanner(false);
+    setDisplayRoom(true);
 
     if (rooms.includes(choice)) setCurrentRoom(choice);
   };
@@ -91,7 +93,14 @@ const App = () => {
 
       <div>
         {/* picture of room */}
-        <Room currentRoom={currentRoom} />
+        {displayRoom && (
+          <Room
+            currentRoom={currentRoom}
+            choices={choices}
+            handleChoice={handleChoice}
+            rooms={rooms}
+          />
+        )}
 
         {message}
         <br></br>
